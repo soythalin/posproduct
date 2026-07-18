@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuickServe POS</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <h1>POS Management</h1>
+        </div>
+        <a class="secondary-link" href="research-project-todo.html">Research Project Todo</a>
+      </header>
+
+      <nav class="screen-switcher" aria-label="POS screens">
+        <button class="screen-btn active" data-target="order">1. Add Items</button>
+        <button class="screen-btn" data-target="pay">2. Review & Pay</button>
+      </nav>
+
+      <main class="content-grid">
+        <section id="screen-order" class="screen-panel active" aria-labelledby="order-title">
+          <div class="panel-header">
+            <div>
+              <h2 id="order-title">Add items to the order</h2>
+            </div>
+            <button id="review-order" class="primary-btn">Review Order</button>
+          </div>
+
+          <div class="product-management" id="product-management">
+            <div class="create-product">
+              <h3>Create Product</h3>
+              <p>Enter the product information below</p>
+
+              <form id="product-form">
+                <label class="field">
+                  <span>Product Name</span>
+                  <input id="product-name" type="text" placeholder="Enter product name" required />
+                </label>
+
+                <label class="field">
+                  <span>Category</span>
+                  <input id="product-category" type="text" placeholder="Enter category (e.g. Soft Drink, Food)" />
+                </label>
+
+                <div class="row">
+                  <label class="field small">
+                    <span>Cost</span>
+                    <div class="money-input">
+                      <span class="money-symbol">$</span>
+                      <input id="product-cost" type="number" step="0.01" min="0" value="0.00" />
+                    </div>
+                  </label>
+
+                  <label class="field small">
+                    <span>Price</span>
+                    <div class="money-input">
+                      <span class="money-symbol">$</span>
+                      <input id="product-price" type="number" step="0.01" min="0" value="0.00" />
+                    </div>
+                  </label>
+                </div>
+
+                <label class="field">
+                  <span>Product Image URL</span>
+                  <input id="product-image" type="url" placeholder="https://example.com/image.jpg" />
+                </label>
+
+                <div class="form-actions">
+                  <button id="cancel-product" type="button" class="secondary-btn">Cancel</button>
+                  <button id="add-product-btn" type="submit" class="primary-btn">Add Product</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="product-list">
+              <h3>Product List</h3>
+              <table id="product-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Product</th>
+                    <th>COST</th>
+                    <th>PRICE</th>
+                    <th>ACTION</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <aside class="cart-card">
+            <div class="cart-header">
+              <h3>Current Order</h3>
+              <span id="cart-count">0 items</span>
+            </div>
+            <ul id="cart-list" class="cart-list"></ul>
+            <div class="cart-summary">
+              <div>
+                <span>Subtotal</span>
+                <strong id="subtotal-value">$0.00</strong>
+              </div>
+              <div>
+                <span>Tax</span>
+                <strong id="tax-value">$0.00</strong>
+              </div>
+              <div class="grand-total">
+                <span>Total</span>
+                <strong id="total-value">$0.00</strong>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section id="screen-pay" class="screen-panel" aria-labelledby="pay-title">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Screen 2</p>
+              <h2 id="pay-title">Display order and pay</h2>
+            </div>
+            <button id="back-to-order" class="secondary-btn">Back to Items</button>
+          </div>
+
+          <div class="summary-layout">
+            <div class="summary-card">
+              <h3>Order Summary</h3>
+              <ul id="checkout-list" class="checkout-list"></ul>
+              <div class="cart-summary">
+                <div>
+                  <span>Subtotal</span>
+                  <strong id="checkout-subtotal">$0.00</strong>
+                </div>
+                <div>
+                  <span>Tax</span>
+                  <strong id="checkout-tax">$0.00</strong>
+                </div>
+                <div class="grand-total">
+                  <span>Total</span>
+                  <strong id="checkout-total">$0.00</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="summary-card">
+              <h3>Payment</h3>
+              <div class="payment-options" role="group" aria-label="Payment method">
+                <button class="payment-btn active" data-method="cash">Cash</button>
+                <button class="payment-btn" data-method="card">Card</button>
+                <button class="payment-btn" data-method="qr">QR</button>
+              </div>
+              <p id="payment-note" class="payment-note">Cash payment selected.</p>
+
+              <div class="payment-receipt">
+                <label class="field">
+                  <span>Amount Received (USD)</span>
+                  <input id="amount-received" type="number" step="0.01" min="0" value="0.00" />
+                </label>
+
+                <div class="change-row">
+                  <div>
+                    <span>Change</span>
+                    <div id="change-value" class="change-value">$0.00</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pay-actions">
+                <button id="cancel-payment" class="secondary-btn">Cancel</button>
+                <button id="pay-now" class="primary-btn">Pay Now</button>
+              </div>
+              <p id="order-message" class="status-message" aria-live="polite"></p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <!-- Edit Product Modal -->
+    <div id="edit-modal" class="modal-backdrop" style="display:none;">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="edit-title">
+        <button class="modal-close" id="edit-modal-close" aria-label="Close">✕</button>
+        <h2 id="edit-title">Edit Product</h2>
+        <p class="muted">Input Product name, Category, Cost, Price, and Image URL.</p>
+
+        <form id="edit-product-form">
+          <label class="field">
+            <span>Product Name</span>
+            <input id="edit-product-name" type="text" placeholder="Example: Iced Coffee" required />
+          </label>
+
+          <label class="field">
+            <span>Category</span>
+            <input id="edit-product-category" type="text" placeholder="Example: Drink" />
+          </label>
+
+          <label class="field">
+            <span>Cost</span>
+            <input id="edit-product-cost" type="number" step="0.01" min="0" value="0.00" />
+          </label>
+
+          <label class="field">
+            <span>Price</span>
+            <input id="edit-product-price" type="number" step="0.01" min="0" value="0.00" />
+          </label>
+
+          <label class="field">
+            <span>Image URL</span>
+            <input id="edit-product-image" type="url" placeholder="https://images.example/…" />
+          </label>
+
+          <div class="form-actions">
+            <button type="button" id="edit-cancel" class="secondary-btn">Cancel</button>
+            <button type="submit" id="edit-update" class="primary-btn">Update Product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="app.js">
+      const payNowBtn = document.getElementById("pay-now");
+const paymentDialog = document.getElementById("payment-dialog");
+const paymentCancel = document.getElementById("payment-cancel");
+const paymentConfirm = document.getElementById("payment-confirm");
+const orderMessage = document.getElementById("order-message");
+
+// Show dialog
+payNowBtn.addEventListener("click", () => {
+    paymentDialog.style.display = "flex";
+});
+
+// Cancel dialog
+paymentCancel.addEventListener("click", () => {
+    paymentDialog.style.display = "none";
+});
+
+// Confirm payment
+paymentConfirm.addEventListener("click", () => {
+
+    paymentDialog.style.display = "none";
+
+    // Your payment logic here
+    orderMessage.textContent = "✅ Payment completed successfully!";
+    orderMessage.style.color = "green";
+
+    // Example: clear cart
+    // cart = [];
+    // updateCart();
+});
+    </script>
+    <!-- Payment Confirmation Dialog -->
+<div id="payment-dialog" class="modal-backdrop" style="display: none;">
+  <div class="modal-card">
+    <h2>Confirm Payment</h2>
+    <p>Are you sure you want to complete this payment?</p>
+
+    <div class="form-actions">
+      <button id="payment-cancel" class="secondary-btn">Cancel</button>
+      <button id="payment-confirm" class="primary-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+  </body>
+</html>
